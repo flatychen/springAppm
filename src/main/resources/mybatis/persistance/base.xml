@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 基础SQL -->
+<mapper namespace="cn.appm.persistance">
+
+	<!-- 
+	
+	<sql id="pageHeader">
+		<if test="!isQueryAll">
+			select * from(select a.*,rownum rn from(
+		</if>
+	</sql>
+	<sql id="pageRoot">
+		<if test="!isQueryAll">
+			) a where rownum &lt;= #{limit }) where rn &gt; #{offset}
+		</if>
+	</sql> 
+	
+	-->
+
+	<sql id="pageHeader">
+		<if test="!isQueryAll">
+			select * from(
+		</if>
+	</sql>
+	<sql id="pageRoot">
+		<if test="!isQueryAll">
+			) ___temp LIMIT #{offset} , #{limit}
+		</if>
+	</sql> 
+
+</mapper>
+

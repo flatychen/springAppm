@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<context:component-scan base-package="cn.appm.web"  use-default-filters="false" >      
+      <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />    
+ 	</context:component-scan> 
+
+	<mvc:annotation-driven />
+
+	<!-- spring 内容协商 同时支持json与html页面 -->
+	<bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="ignoreAcceptHeader" value="false" />
+		<property name="mediaTypes">
+			<map>
+				<entry key="json" value="application/json" />
+			</map>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<bean
+					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+					<!-- 设置单对象返回JSON直接返回 -->
+					<property name="extractValueFromSingleKeyModel" value="true" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 视图解析 -->
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="configLocation" value="/WEB-INF/freemarker.properties" />
+		<property name="templateLoaderPath" value="/WEB-INF/" />
+	</bean>
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="cache" value="false" />
+		<property name="prefix" value="" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="suffix" value=".htm" />
+	</bean>
+
+	<!-- 文件上传解析 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	</bean>
+	
+	<!-- 静态资源解析支持 -->
+	<mvc:default-servlet-handler />
+
+	<!-- 引入 -->
+	<import resource="spring_interceptors.xml" />
+</beans>

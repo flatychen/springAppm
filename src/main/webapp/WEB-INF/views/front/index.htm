@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>index</title>
+</head>
+<body>
+	<div class="container">
+	<div class="grid fluid">
+	</div>
+	<div class="container">
+	<table class="table bordered striped hovered border-green">
+		<thead>
+			<tr class="bg-cyan fg-white">
+				<th class="text-center">Name</th>
+				<th class="text-center"> <i class="icon-apple"></i></th>
+				<th class="text-center"> <i class="icon-android"></i></th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list pageBean.objList as item >
+			<tr>
+				<tr>
+				<td class="text-center">${item.projectName}</td>
+				<#list allAppType as item2>
+					<td class="text-center">
+					      <a href="${base}/f/more?projectId=${item.id}&appType=${item2.id}"><button class="link">进入</button></a>
+					</td>
+				</#list>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	</div>
+	<div class="pagination">
+    <ul>
+      <!--   <li class="first"><a><i class="icon-first-2"></i></a></li>
+        <li class="prev"><a><i class="icon-previous"></i></a></li>
+        <li><a>1</a></li>
+        <li><a>2</a></li>
+        <li class="active"><a>3</a></li>
+        <li class="spaces"><a>...</a></li>
+        <li class="disabled"><a>4</a></li>
+        <li><a>500</a></li>
+        <li class="next"><a><i class="icon-next"></i></a></li>
+        <li class="last"><a><i class="icon-last-2"></i></a></li> -->
+    </ul>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$(".e_download").click(function(){
+			var _id = $(this).attr("id");
+			window.location = "${base}/f/app/"+_id+"/download";
+		})
+	})
+</script>
+</body>
+</html>

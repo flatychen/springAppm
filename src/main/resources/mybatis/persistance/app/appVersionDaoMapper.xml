@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.appm.persistance.app.AppVersionDao">
+
+	<select id="findLatestAppVersionByPage" resultType="cn.appm.services.app.vo.LatestApp">
+		SELECT t1.projectid projectId, max(t1.version) as  latestVersion,t2.id as appType ,t1.id as appVersionId
+		FROM  tb_versions t1 ,tb_apptype t2
+		where
+		t1.apptype = t2.id and 
+		t2.intro = #{type}
+		group by t1.projectid,t2.id,t1.id order by t1.projectid  asc 
+	</select>
+	
+
+
+	<select id="findAllAppVersionByPage" resultType="cn.appm.services.app.model.AppVersion">
+		<include refid="cn.appm.persistance.pageHeader"/>
+		SELECT a.id, apptype, version, projectname, content, createdate, updatedate, projectId,appFile,iosAppend,appsavename
+		FROM tb_versions a,tb_appfile b
+		<where>
+				a.appFile = b.id 
+				<if test="projectId != null">
+					and projectId = #{projectId}
+				</if>
+				<if test="appType != null">
+					and  appType = #{appType}
+				</if>
+		</where>
+		order by version desc
+		<include refid="cn.appm.persistance.pageRoot"   />
+	</select>
+	
+	<select id="findAllAppVersionByPageCount" resultType="int">
+		SELECT count(1) FROM
+		tb_versions
+		<where>
+			<choose>
+				<when test="projectId != null">
+					projectId = #{projectId}
+				</when>
+				<when test="appType != null">
+					and appType = #{appType}
+				</when>
+			</choose>
+		</where>
+	</select>
+	
+	<select id="getApp" resultType="cn.appm.services.app.model.AppVersion">
+		SELECT id, apptype, version, projectname, content, createdate, updatedate, projectId,appFile,iosAppend  
+		FROM tb_versions 
+		where id = #{id}
+	</select>
+
+
+	<insert id="insertApp">
+			insert into tb_versions
+			(
+			  appType,
+			  projectId,
+			  version,
+			  projectName,
+			  content,
+			  createDate,
+			  updatedate,
+			  iosAppend,
+			  appFile
+			)
+			values(
+			  #{appType},
+			  #{projectId,jdbcType=INTEGER},
+			  #{version,jdbcType=VARCHAR},
+			  #{projectName,jdbcType=VARCHAR},
+			  #{content,jdbcType=VARCHAR},
+			  NOW(),
+			  NOW(),
+			  #{iosAppend,jdbcType=VARCHAR},
+			  #{appFile}
+			)
+	</insert>
+		
+	
+	<update id="updateApp" >
+		update tb_versions
+		set
+		  version           = #{version,jdbcType=VARCHAR},
+		  content           = #{content,jdbcType=VARCHAR},
+		  appFile			= #{appFile},
+		  updateDate        = NOW()
+		where id = #{id}
+
+	</update>
+	
+	
+	<delete id="delApp">
+		delete from tb_versions where id = #{id}
+	</delete>
+
+
+</mapper>
+

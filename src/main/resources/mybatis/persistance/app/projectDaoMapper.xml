@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="cn.appm.persistance.app.ProjectDao">
+
+	
+	
+	<select id="findProjectByPage"  resultType="cn.appm.services.app.model.Project" >
+		<include refid="cn.appm.persistance.pageHeader"/>
+		select id, projectname, intro, icon, createdate, updatedate from tb_project
+		<where>
+			<choose>
+				<when test="key != null">
+					instr(projectname,#{key})
+				</when>
+			</choose>
+		</where>
+		order by id asc
+		<include refid="cn.appm.persistance.pageRoot"   />
+	</select>
+	
+	<select id="findProjectByPageCount"  resultType="int" >
+		select count(1) from tb_project
+		<where>
+			<choose>
+				<when test="key != null">
+					instr(projectname,#{key})
+				</when>
+			</choose>
+		</where>
+	</select>
+	
+	
+	<delete id="delProject">
+		delete from tb_project where id = #{id}
+	</delete>
+	
+	<delete id="delProjectApp">
+		delete from TB_VERSIONS where projectId = #{id}
+	</delete>
+	
+	<insert id="insertProject">
+		insert into tb_project
+		(
+		 
+		  projectName,
+		  intro,
+		  icon,
+		  createDate,
+		  updateDate
+		)
+		values(
+		
+		  #{projectName},
+		  #{intro},
+		  #{icon,jdbcType=VARCHAR},
+		  NOW(),
+		   NOW()
+		)
+	</insert>
+		
+	
+	<update id="updateProject">
+		update tb_project
+		set
+		  projectName       = #{projectName},
+		  intro             = #{intro},
+		  icon              = #{icon,jdbcType=VARCHAR},
+		  updateDate        = NOW()
+		where Id = #{id} and updateDate = #{updateDate}
+
+	</update>
+	
+	<select id="getProject" resultType="cn.appm.services.app.model.Project">
+		select id, projectname, intro, icon, createdate, updatedate from tb_project where id = #{id}
+	</select>
+	
+</mapper>
+

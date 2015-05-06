@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>index</title>
+<link href="${base}/res/js/validator-0.7.2/jquery.validator.css" rel="stylesheet">
+<script type="text/javascript" src="${base}/res/js/validator-0.7.2/jquery.validator.js" ></script>
+<script type="text/javascript" src="${base}/res/js/validator-0.7.2/local/zh_CN.js" ></script>
+</head>
+<body>
+	<div class="span6">
+		<form id="form_project_update"  data-validator-option="{stopOnError:false, timely:2}" >
+			<fieldset>
+				<legend>
+					<h2>
+						<i class=" on-left"></i> <strong>修改工程</strong>
+					</h2>
+				</legend>
+				<div>
+					<input name="updateDate" value="${project.updateDate?datetime}" type="hidden" />
+					<label>工程名</label>
+					<div class="input-control text" data-role="input-control">
+						<input name="projectName" type="text" value="${project.projectName}" placeholder="type text" data-rule="工程名:required;length[1~20]">
+						<button class="btn-clear" tabindex="-1"></button>
+					</div>
+					<label>工程简介</label>
+					<div class="input-control textarea" data-role="input-control" >
+						<textarea name="intro" data-rule="工程简介:required;length[1~100]" >${project.intro}"</textarea>
+					</div>
+				</div>
+				<br /> 
+				<input type="submit" value="确定修改">
+			</fieldset>
+		</form>
+	</div>
+<script type="text/javascript">
+	$(function(){
+		$("#form_project_update").on("valid.form", function(){
+		    $.post(
+		        "${base}/b/projects/${project.id}/update",
+		        $(this).serialize(),
+		        function(json){
+		            if(json.success){
+		            	base.info("修改工程成功~");
+		            }else{
+		            	base.info("修改工程失败："+json.message);
+		            };
+		        },
+		        "json"
+		    );
+		})
+		
+	})
+</script>	
+</body>
+</html>

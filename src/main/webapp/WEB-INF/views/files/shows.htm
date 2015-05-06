@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>user info</title>
+</head>
+
+<body>
+
+	${Request.test}
+	<div style="width:900px;margin:20px auto;">
+	<table border="1">
+		<thead>
+			<tr>
+				<th >是否成功</th>
+				<th>提示消息</th>
+				<th>文件名称</th>
+				<th>文件内容</th>
+			</tr>
+		</thead>
+		<tbody>
+		
+		<#list data as item  >
+			<tr>
+				<td width="100px">${item.success}</td>
+				<td width="100px">${item.message}</td>
+				<td>${item.realFileName}</td>
+				<td><img src="${Request.base}${item.webLinkfileName}" width="400px" height="200px" /></td>
+			</tr>
+		
+		</#list>
+		</tbody>
+		
+	</table>
+	
+	
+	</div>
+</body>
+</html>

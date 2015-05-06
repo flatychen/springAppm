@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/base">
+	<decorator name="front" page="frontWrapper.htm">
+		<pattern>/f/*</pattern>
+	</decorator>
+	<decorator name="back" page="backWrapper.htm">
+		<pattern>/b/*</pattern>
+	</decorator>
+</decorators>

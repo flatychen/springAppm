@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>user info</title>
+</head>
+
+<body>
+	<div style="width:400px;margin:20px auto;">
+		中文测试
+		<form action="${base}/users/create" method="post">
+			<ul>
+				<li><label>userName</label> <span><input type="text"
+						name="userName" /> </span>
+				</li>
+				<li><label>pwd</label> <span><input type="text"
+						name="pwd" /> </span>
+				</li>
+				<li><label>email</label> <span><input type="text"
+						name="email" /> </span>
+				</li>
+				<li><img src="${base}/servlet/securityCode" alt="" /> <input
+					type="text" name="clientValidateCode" /></li>
+				<li><input type="submit" /></li>
+			</ul>
+		</form>
+	</div>
+</body>
+</html>

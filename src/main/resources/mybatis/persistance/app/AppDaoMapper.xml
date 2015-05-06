@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="cn.appm.persistance.app.AppDao">
+
+	
+	<select id="getLatestApp" resultType="cn.appm.services.app.vo.LatestApp">
+	SELECT t1.projectid,max(t1.version) latestVersion
+ 	FROM tb_versions t1 ,tb_apptype 
+	t2 
+	where t1.apptype = t2.id 
+	and t2.intro = #{appType} 
+	and t1.projectId = #{projectId} 
+	group by t1.projectId 
+	</select>
+	
+	
+</mapper>
+

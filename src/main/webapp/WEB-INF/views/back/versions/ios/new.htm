@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>index</title>
+<link rel="stylesheet" href="${base}/res/js/kindeditor/themes/default/default.css" /> 
+<link href="${base}/res/js/validator-0.7.2/jquery.validator.css" rel="stylesheet">
+<script type="text/javascript" src="${base}/res/js/validator-0.7.2/jquery.validator.js" ></script>
+<script type="text/javascript" src="${base}/res/js/validator-0.7.2/local/zh_CN.js" ></script>
+</head>
+<body>
+	<div class="">
+		<form id="form_version_new" data-validator-option="{stopOnError:false, timely:2}">
+			<input type="hidden" name="appType" value="${appType.id}" />
+			<fieldset>
+				<legend>
+					<h2>
+						<i class="${appType.icon} on-left"></i> <strong>${appType.intro}</strong>&nbsp;新增
+					</h2>
+				</legend>
+				<div>
+					<label>工程<span id="project-tip"></span></label>
+					<div >
+						<div class="input-control select size6">
+							<select name="projectId" id="select_project" data-rule="工程:required;" data-target="project-tip" >
+								<option value="">选择工程</option>
+						    	<#list projects as item>
+						        <option value="${item.id}">${item.projectName}</option>
+						        </#list>
+						    </select>
+						</div>
+						<div class="input-control select size4" id="latest" >
+							&nbsp;&nbsp;&nbsp;&nbsp;最新版本:&nbsp&nbsp<strong></strong>
+						</div>
+					</div>
+					<label>版本</label>
+					<div class="input-control text size6" data-role="input-control">
+						<input  type="text" name="version" placeholder="填写版本" data-rule="版本:required;length[1~20]" />
+						<button class="btn-clear" tabindex="-1"></button>
+					</div>
+					<label>版本介绍<span id="intro_tip"></span></label>
+					<div class="input-control textarea" data-role="input-control">
+						<textarea name="content" style="height: 400px;" rows="" cols="" data-rule="版本介绍:required;length[1~]" data-target="#intro_tip">...</textarea>
+					</div>
+					<label>app<span id="app-tip"></span></label>
+					<div class="input-control file size6" id="fileWrapper">
+						<input type="hidden" name="appFile" data-target="#app-tip"  data-rule="app:required;length[1~]" />
+						<input type="file" name="file"  placeholder="上传APP" id="fileupload" data-url="${base}/b/versions/uploadApp"/>
+						<button class="btn-file"></button>
+					</div>
+					<div class="input-control size3 file" id="progress">
+						 <div class="progress-bar " data-role="progress-bar" data-value="100" style="margin-top: 10px;width:0%"></div>
+					</div> 
+					<div class="input-control size1 file" id="progress_percent">
+						 <strong style="line-height: 30px;"></strong>
+					</div> 
+					<div class="input-control msg_upload" data-role="input-control">
+						<div class="row" style="margin-top: 5px;margin-bottom: 10px;">
+					        <div class="span2">下载地址：</div>
+					        <div class="span5"></div>
+					    </div>
+					</div>
+					
+					<label>plist地址</label>
+					<div class="input-control text size6" data-role="input-control">
+						<input  type="text" name="iosAppend" placeholder="填写plist地址" data-rule="版本:required;length[1~]" value=""/>
+						<button class="btn-clear" tabindex="-1"></button>
+					</div>
+				</div>
+				<br /> 
+				<input type="submit" class="input-control size2" value="确定提交">
+			</fieldset>
+		</form>
+	</div>
+
+<script type="text/javascript"  src="${base}/res/js/kindeditor/kindeditor-all-min.js"></script>
+<script type="text/javascript"  src="${base}/res/js/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript"  src="${base}/res/js/jQuery-File-Upload/jquery.iframe-transport.js"></script>
+<script type="text/javascript"  src="${base}/res/js/jQuery-File-Upload/jquery.fileupload.js"></script>
+<script type="text/javascript">
+$(function(){
+	
+	// 上传APP
+	$("#fileupload").fileupload({
+        dataType: 'json',
+        done: function (e, data) {
+        	var _result = data.result;	
+        	if(_result.success){
+        		var _fileWrapper = $("#form_version_new").find("#fileWrapper");
+            	_fileWrapper.find("input[name=appFile]").val(_result.data.appFileId);
+        		$(".msg_upload").find("div.span5").html("${base}"+_result.data.url);
+        	}else{
+        		base.info("上传失败："+_result.message)
+        	}
+        
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css('width',progress + '%');
+            $('#progress_percent').find("strong").text(progress+"%");
+        }
+    });
+	
+	// 查找最新版本
+	$("#select_project").change(function(){
+		var  _projectId = $(this).val();
+		$.getJSON("${base}/b/apps/latestApp?projectId="+_projectId+"&appType=${appType.intro}",function(json){
+			var $latest = $("#latest").find("strong");
+			if(json.latestVersion == null){
+				$latest.html("无");
+			}else{
+				$latest.html(json.latestVersion)
+			}
+			
+		})
+	})
+	
+	$("#form_version_new").on("valid.form", function(){
+		    $.post(
+		        "${base}/b/versions/ios/create",
+		        $(this).serialize(),
+		        function(json){
+		            if(json.success){
+		            	var _projectId = $("#select_project").val();
+		            	base.info("添加版本成功~","${base}/b/versions/query?appType=${appType.id}&projectId="+_projectId);
+		            }else{
+		            	alert("添加版本失败："+json.message);
+		            };
+		        },
+		        "json"
+		    );
+		})
+	
+	// 编辑器
+	var editor = KindEditor.create('textarea[name="content"]',{
+		resizeType : 1,
+		allowPreviewEmoticons : true,
+		allowImageRemote : true,
+		urlType : 'domain',
+		uploadJson : '${base}/b/versions/uploadImg',
+		items : [
+			'source','preview','fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+			'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+			'insertunorderedlist', '|',  'image', 'link']
+	});
+})
+</script>	
+</script>
+</body>
+</html>

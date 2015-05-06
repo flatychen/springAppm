@@ -1,0 +1,323 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cn.appm</groupId>
+	<artifactId>appm</artifactId>
+	<packaging>war</packaging>
+	<version>1.0.0</version>
+	<name>appm</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<!-- 项目定义 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
+		<maven.compiler.compilerVersion>1.6</maven.compiler.compilerVersion>
+		<jdk.version>1.6</jdk.version>
+
+
+		<!-- 依赖 -->
+		<!-- apache commons -->
+		<commons-lang-version>2.4</commons-lang-version>
+		<commons-io-version>2.4</commons-io-version>
+		<commons-fileupload-version>1.2.2</commons-fileupload-version>
+		<commons-codec-version>1.8</commons-codec-version>
+		<commons-dbcp-version>1.4</commons-dbcp-version>
+		<commons-beanutils-version>1.9.0</commons-beanutils-version>
+		<!-- httpclient -->
+		<httpasyncclient-version>4.0.2</httpasyncclient-version>
+		<!-- logs -->
+		<org.slf4j-version>1.6.4</org.slf4j-version>
+		<log4j-version>1.2.14</log4j-version>
+		<log4jdbc-remix-version>0.2.7</log4jdbc-remix-version>
+		<!-- spring -->
+		<org.aspectj-version>1.7.2</org.aspectj-version>
+		<org.springframework-version>3.2.8.RELEASE</org.springframework-version>
+		<cglib-version>2.2.2</cglib-version>
+		<!-- mybatis -->
+		<org.mybatis.mybatis>3.2.7</org.mybatis.mybatis>
+		<org.mybatis.mybatis-spring>1.2.2</org.mybatis.mybatis-spring>
+
+		<!-- view -->
+		<sitemesh-version>2.4.2</sitemesh-version>
+		<freemarker-version>2.3.20</freemarker-version>
+		<!-- json -->
+		<com.alibaba.fastjson>1.1.40</com.alibaba.fastjson>
+		<org.codehaus.jackson-version>1.9.8</org.codehaus.jackson-version>
+		<!-- jsr 303 -->
+		<javax.validation-version>1.0.0.GA</javax.validation-version>
+		<org.hibernate-version>4.3.1.Final</org.hibernate-version>
+
+		<!-- image thumb -->
+		<net.coobird.thumbnailator>0.4.6</net.coobird.thumbnailator>
+		<!-- test -->
+		<junit-version>4.8.2</junit-version>
+		<org.mockito.mockito-core>1.9.5</org.mockito.mockito-core>
+
+
+		<!-- jetty embedded -->
+		<jetty.version>8.1.16.v20140903</jetty.version>
+
+
+		<!-- 项目属性 -->
+		<!-- <jdbc.driver.groupId>com.h2database</jdbc.driver.groupId> <jdbc.driver.artifactId>h2</jdbc.driver.artifactId> 
+			<jdbc.driver.version>1.4.184</jdbc.driver.version> -->
+		<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
+		<jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
+		<jdbc.driver.version>5.1.21</jdbc.driver.version>
+
+	</properties>
+	<dependencies>
+
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j-version}</version>
+		</dependency>
+		<!-- apache commons -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${commons-lang-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${commons-fileupload-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons-codec-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>${commons-dbcp-version}</version>
+		</dependency>
+
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<!-- cglib -->
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>${cglib-version}</version>
+		</dependency>
+		<!-- AspectJ -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+
+		<!-- mybatis persistense -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${org.mybatis.mybatis}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>${org.mybatis.mybatis-spring}</version>
+		</dependency>
+
+
+
+
+
+		<!-- jdbc -->
+		<dependency>
+			<groupId>${jdbc.driver.groupId}</groupId>
+			<artifactId>${jdbc.driver.artifactId}</artifactId>
+			<version>${jdbc.driver.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- jdbc log -->
+		<dependency>
+			<groupId>org.lazyluke</groupId>
+			<artifactId>log4jdbc-remix</artifactId>
+			<version>${log4jdbc-remix-version}</version>
+		</dependency>
+
+
+		<!-- Jackson JSON Processor -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${org.codehaus.jackson-version}</version>
+		</dependency>
+		<!-- fastjson -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${com.alibaba.fastjson}</version>
+		</dependency>
+
+		<!-- sitemesh -->
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>sitemesh</artifactId>
+			<version>${sitemesh-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>${freemarker-version}</version>
+		</dependency>
+
+		<!-- JSR 303 with Hibernate Validator -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${javax.validation-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${org.hibernate-version}</version>
+		</dependency>
+
+
+		<!-- image thumb -->
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>${net.coobird.thumbnailator}</version>
+		</dependency>
+
+		<!-- async http client -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpasyncclient</artifactId>
+			<version>${httpasyncclient-version}</version>
+		</dependency>
+
+
+		<!-- Test -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${org.mockito.mockito-core}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Jetty -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>${jetty.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jsp</artifactId>
+			<version>${jetty.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<finalName>springBase</finalName>
+		<pluginManagement>
+			<plugins>
+				<!-- 处理资源 -->
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.5</version>
+				</plugin>
+				<!-- clean -->
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.4.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.4</version>
+					<configuration>
+						<compilerVersion>${jdk.version}</compilerVersion>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-maven-plugin</artifactId>
+					<version>9.2.6.v20141205</version>
+					<configuration>
+						<reload>manual</reload>
+						<webApp>
+							<contextPath>/${project.artifactId}</contextPath>
+						</webApp>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>

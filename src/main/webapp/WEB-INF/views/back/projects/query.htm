@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>index</title>
+</head>
+<body>
+<div class="">
+	<table class="table bordered striped hovered green">
+		<thead>
+			<tr>
+				<th class="text-center">名称</th>
+				<#list appTypes as item>
+					<th class="text-center"><i class="${item.icon}"></i></th>
+				</#list>
+				<th class="text-center">时间</th>
+				<th class="text-center">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list pageBean.objList as item >
+			<tr>
+				<td class="text-center">${item.projectName}</td>
+				<#list appTypes as item2>
+					<td class="text-center"> 
+						<a href="${base}/b/versions/query?projectId=${item.id}&appType=${item2.id}"><button class="link">更多</button></a>
+					</td>
+				</#list>
+				<td class="text-center">${item.createDate?date}</td>
+				<td class="text-center">
+					<button class="inverse e_edit" id="${item.id}">修改</button>
+					<button class="warning e_del"  id="${item.id}">删除</button>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$(".e_del").click(function(){
+			if(confirm("确定要删除工程？确定将删除工程对应所有版本APP !!")){
+				$.getJSON("${base}/b/projects/"+$(this).attr("id")+"/del", function(json){
+					if(json.success){
+						base.info("删除成功");
+					}else{
+						base.info("删除失败:"+json.message);
+					}
+				});
+			}
+		})
+		
+		
+		$(".e_edit").click(function(){
+			window.location = "${base}/b/projects/"+$(this).attr("id")+"/edit";
+		})
+		
+	})
+</script>
+</body>
+</html>

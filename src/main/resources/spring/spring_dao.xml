@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+         http://www.springframework.org/schema/tx	http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
+
+
+	<!-- DBCP 连接池 -->
+	<bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialSize" value="2" />
+		<property name="maxActive" value="10" />
+		<property name="minIdle" value="5" />
+		<property name="maxIdle" value="5" />
+		<property name="maxWait" value="60000" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="180" />
+		
+		<!-- 启动自动重连 -->
+		<property name= "testWhileIdle" value="true" />  
+        <property name= "testOnBorrow" value="false" />  
+        <property name= "testOnReturn" value="false" />  
+        <property name= "validationQuery" value="select 1" />  
+        <property name= "timeBetweenEvictionRunsMillis" value="60000" />  
+        <property name= "numTestsPerEvictionRun" value="10" />  
+		
+	</bean>
+	
+	
+	 <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="SINGLE_LINE" />
+				<property name="sqlPrefix" value="SQL:::" />
+			</bean>
+		</property>
+	</bean>
+
+	<!-- mybatis sqlSession -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:mybatis/persistance/**/*.xml" />
+		<property name="configLocation" value="classpath:mybatis/mybatis.xml" />
+	</bean>
+
+	<!-- mybatis mapper -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.appm.persistance" />
+	</bean>
+
+
+	<!-- 事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="query*" propagation="SUPPORTS" read-only="true" />
+			<tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut expression="execution(* cn.appm..service..*(..))"
+			id="transactionPointcut" />
+		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="transactionPointcut" />
+	</aop:config>
+
+	<!-- spring 注解事务支持 -->
+	<tx:annotation-driven proxy-target-class="true"
+		transaction-manager="transactionManager" />
+
+
+</beans>

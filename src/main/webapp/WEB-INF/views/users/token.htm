@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>user info</title>
+<script type="" src="${base}/js/jslib/jquery-1.7.2.min.js" ></script>
+</head>
+<body>
+	<div style="width:400px;margin:20px auto;">
+		ajax 重复提交:<br />
+		<input  type="button" value ="tokenTest" onclick = "tokenTest();" />
+		<script>
+			function tokenTest(){
+				var token = "${base}/servlet/securityToken";
+				$.post("${base}/token",{"token":"${Session.token}"},function(data){
+					console.log(data);
+				},"json")
+				
+			}
+		</script>
+		============================================<br />
+		post表单重复提交:<br />
+		<div>
+			<form action="${base}/token" method="post">
+				<input  type="hidden" name="token"  value="${Session.token}" />
+				<input type="submit" /> 
+			</form>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<#compress>
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="${base}/res/css/metro-bootstrap.css" rel="stylesheet">
+<link href="${base}/res/css/metro-bootstrap-responsive.css" rel="stylesheet">
+<link href="${base}/res/css/iconFont.css" rel="stylesheet">
+<link href="${base}/res/css/custom.css" rel="stylesheet">
+<script src="${base}/res/js/jquery/jquery.min.js"  ></script>
+<script src="${base}/res/js/jquery/jquery.mousewheel.js"></script>
+<script src="${base}/res/js/jquery/jquery.widget.min.js"></script>
+<script src="${base}/res/js/metro/metro.min.js"></script>
+<script src="${base}/res/js/module/base.js"></script>
+${head}
+</head>
+<body class="metro">
+	<header>
+	<nav class="navigation-bar dark">
+			<nav class="navigation-bar-content container">
+				<a href="#" class="element place-left" style="float:left !important;"> <i class="icon-file"></i> APPS MANAGER </a> 
+				<span class="element-divider"></span> 
+				<a href="${base}/b/projects/new" class="element place-left" style="float:left !important;"><i class="icon-plus on-left-more"></i>新建工程 </a>
+				<a href="${base}/f/loginOut" class="element place-right" style="float:right !important;"> 
+			       	<i class="icon-user">
+			       	</i>
+			       	退出
+		       </a>
+			</nav>
+	</nav>
+	</header>
+	<div class="container">
+		<div>
+			<div class="grid ">
+				<div class="row">
+					<div class="span4">
+						<a  href="${base}/b/projects/query" class="tile  double bg-dark place-right" data-click="transform">
+							<div class="tile-content icon"> 
+						       	<i class="icon-list "></i>
+						    </div>
+						</a>
+						<#list appTypes as item >
+							<a  href="${base}/b/versions/${item.intro}/new?appType=${item.id}" class="tile ${item.background}" data-click="transform">
+							 <div class="tile-content icon">
+						        <i class="${item.icon}"></i>
+						   	 </div>
+							</a>
+						</#list>
+					</div>
+					<div class="span10">
+					<!-- <nav class="breadcrumbs">
+					    <ul>
+					        <li><a href="#">Home</a></li>
+					        <li><a href="#">Library</a></li>
+					        <li class="active"><a href="#">Data</a></li>
+					    </ul>
+					</nav> -->
+					<br />
+					${body}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+</#compress>

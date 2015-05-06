@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>index</title>
+<link href="${base}/res/js/validator-0.7.2/jquery.validator.css" rel="stylesheet">
+<script type="text/javascript" src="${base}/res/js/validator-0.7.2/jquery.validator.js" ></script>
+<script type="text/javascript" src="${base}/res/js/validator-0.7.2/local/zh_CN.js" ></script>
+</head>
+<body>
+	<div class="container">
+	 <div class="grid">
+   	   <div class="row">
+        		<div class="span4"> </div>
+				<div class="span6 mc" >
+					<form id="form_login">
+						<fieldset>
+							<legend class="text-center">登陆</legend>
+							<p class="text-warning"></p>
+							<label>用户名<span id="userName_tip"></span></label>
+							<div class="input-control text" data-role="input-control">
+								<input type="text" name="userName" placeholder="用户名"   data-target="#userName_tip"  data-rule="用户名:required;length[1~20]" >
+								<button class="btn-clear" tabindex="-1" type="button"></button>
+							</div>
+							<label>密码<span id="pwd_tip"></span></label>
+							<div class="input-control password" data-role="input-control">
+								<input type="password" name="pwd" placeholder="密码"   data-target="#pwd_tip"  data-rule="密码:required;length[1~20]" >
+								<button class="btn-reveal" tabindex="-1" type="button"></button>
+							</div>
+							<label>验证码<span id="scode_tip"></span></label>
+							<div class="input-control fl text size5" data-role="input-control" style="margin-right: 5px;">
+								<input type="text"  maxlength="4" min="4" name="clientCaptcha" placeholder="验证码"  data-target="#scode_tip" data-rule="验证码:required;length[1~20];remote[${base}/checkCode]" >
+								<button class="btn-clear" tabindex="-1" type="button"></button>
+								
+							</div>
+							<div class="input-control fl text" style="width: 75px;" >
+								 <img id="scode" alt="" src="${base}/servlet/securityCode" onclick="this.src='${base}/servlet/securityCode?t=?Math.random()'">
+							</div>
+							<div class="cb"></div>
+							<input type="submit" value="登陆">
+						</fieldset>
+					</form>
+				</div>
+				<div class="span4"> </div>
+		</div>
+	</div>			
+	</div>
+	</div>
+	<script type="text/javascript">
+	$("#form_login").on("valid.form", function(){
+	    $.post(
+	        "${base}/f/login",
+	        $(this).serialize(),
+	        function(json){
+	            if(json.success){
+	            	window.location="${base}/b/projects/query";
+	            }else{
+	            	$("#form_login").find(".text-warning").text(json.message);
+	            	$("#form_login").find("#scode").click();
+	            };
+	        },
+	        "json"
+	    );
+	})
+	</script>
+</body>
+</html>

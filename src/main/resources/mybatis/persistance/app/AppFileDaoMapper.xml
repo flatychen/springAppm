@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="cn.appm.persistance.app.AppFileDao">
+	
+	<insert id="insertAppFile"    >
+		insert into tb_appfile
+		(
+		  id, uploadname, appsavename
+		)
+		values(
+		  #{id},
+		  #{uploadName},
+		  #{appSaveName}
+		)
+	</insert>
+		
+		
+	
+	<update id="updateAppFile" >
+		update tb_appfile
+		set
+		  appUploadName     = #{appUploadName,jdbcType=VARCHAR},
+		  appPath           = #{appPath,jdbcType=VARCHAR},
+		  appSaveName       = #{appSaveName,jdbcType=VARCHAR},
+		where id = #{id}
+
+	</update>	
+	
+	
+	<select id="getAppFile" resultType="cn.appm.services.app.model.AppFile">
+		SELECT  id, uploadname, apppath, appsavename FROM tb_appfile 
+		where id = #{id}
+	</select>
+	
+	
+	<delete id="delAppFile">
+		delete from tb_appfile where id = #{id}
+	</delete>
+	
+	<delete id="delOtherApp">
+		DELETE from tb_appfile t WHERE not exists( select * from tb_versions t1 WHERE t.id = t1.appfile )
+	</delete>
+</mapper>
+

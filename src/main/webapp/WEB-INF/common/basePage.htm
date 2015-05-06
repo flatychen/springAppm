@@ -1,0 +1,45 @@
+
+<c:set value="${pageBean.begin }" var="begin"></c:set>
+<c:set value="${pageBean.end }" var="end"></c:set>
+
+<div class="page fs14" data-toPage="${pageBean.toPage }">
+	<c:if test="${pageBean.toPage>1}">
+		<a class="page_up" href="" onclick="return pageGo(${pageBean.toPage-1});"></a>
+	</c:if>
+
+	<c:forEach begin="${begin}" end="${end}" varStatus="status">
+		&nbsp;&nbsp; 
+		<c:choose>
+			<c:when test="${status.index==pageBean.toPage}">
+				<a href="" onclick=" return pageGo(${status.index})">[${status.index}]</a>
+			</c:when>
+			<c:otherwise>
+				<a  href="" onclick=" return pageGo(${status.index})">${status.index}</a>
+			</c:otherwise>
+		</c:choose>
+	</c:forEach>
+
+	<c:if test="${pageBean.toPage<pageBean.totalPage}">
+		<a href="" class="page_dn" onclick="return pageGo(${pageBean.toPage+1})"  ></a>
+	</c:if>
+	
+	<span class="ml30 c717171 fs14">跳转：</span>
+	<input id="toPage" name="toPage" class="page_in w30" value="${pageBean.toPage}" type="text"> / ${pageBean.totalPage }
+	<a href="" class="page_go" onclick="return pageGo(document.getElementById('toPage').value);">确定</a>
+	
+</div>
+<script type="text/javascript">
+function pageGo(pageNo){
+		if(!/^[1-9][0-9]*$/.test(pageNo)) {
+			alert("请输入合法的页码！");
+		} else {
+			<c:if test="${!empty functionName}">
+				${functionName}(pageNo);
+				return false;
+			</c:if>
+			document.pageForm.toPage.value=pageNo;
+			document.pageForm.submit();
+		}
+		return false;
+	}
+</script>

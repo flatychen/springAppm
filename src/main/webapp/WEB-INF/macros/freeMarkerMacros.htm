@@ -1,0 +1,14 @@
+﻿<#macro token>
+	<input name="token"  value="${Session.token}" />
+</#macro>
+
+
+<#-- 截取字符串 -->
+<#macro subString len str>
+	<#local lastStr = "" >
+	<#if ((str?length) > len) >
+		${str?substring(0,len)}...
+	<#else>
+		${str}	
+	</#if>
+</#macro>

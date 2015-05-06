@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>index</title>
+<link rel="stylesheet" href="${base}/res/js/kindeditor/themes/default/default.css" /> 
+<link href="${base}/res/js/validator-0.7.2/jquery.validator.css" rel="stylesheet">
+<script type="text/javascript" src="${base}/res/js/validator-0.7.2/jquery.validator.js" ></script>
+<script type="text/javascript" src="${base}/res/js/validator-0.7.2/local/zh_CN.js" ></script>
+</head>
+<body>
+	<div class="">
+		<form id="form_version_edit" data-validator-option="{stopOnError:false, timely:2}">
+			<input type="hidden" name="appType" value="${appType.id}" />
+			<input type="hidden" name="updateDate" value="${version.updateDate?datetime}" />
+			<fieldset>
+				<legend>
+					<h2>
+						<i class="${appType.icon} on-left"></i> <strong>${appType.intro}</strong>&nbsp; 修改
+					</h2>
+				</legend>
+				<div>
+					<label>工程名称:&nbsp;&nbsp;<strong>${version.projectName}</strong></label>
+					<label>版本</label>
+					<div class="input-control text size6" data-role="input-control">
+						<input  type="text" name="version" placeholder="填写版本" data-rule="版本:required;length[1~20]" value="${version.version}"/>
+						<button class="btn-clear" tabindex="-1"></button>
+					</div>
+					<label>版本介绍<span id="intro_tip"></span></label>
+					<div class="input-control textarea" data-role="input-control">
+						<textarea name="content" style="height: 400px;" rows="" cols="" data-rule="版本介绍:required;length[1~]" data-target="#intro_tip">
+							${version.content}
+						</textarea>
+					</div>
+					<label>重新上传APP<span id="app-tip"></span></label>
+					<div class="input-control file size6" id="fileWrapper">
+						<input type="hidden" name="appFile" data-target="#app-tip"  data-rule="app:required;length[1~]" value="${version.appFile}" />
+						<input type="file" name="file"  placeholder="重新上传APP" id="fileupload" data-url="${base}/b/versions/uploadApp"/>
+						<button class="btn-file"></button>
+					</div>
+					<div class="input-control size3 file" id="progress">
+						 <div class="progress-bar " data-role="progress-bar" data-value="100" style="margin-top: 10px;width:0%"></div>
+					</div> 
+					<div class="input-control size1 file" id="progress_percent">
+						 <strong style="line-height: 30px;"></strong>
+					</div> 
+					<div class="input-control msg_upload" data-role="input-control">
+						<div class="row" style="margin-top: 5px;margin-bottom: 10px;">
+					        <div class="span2 text-muted">下载地址：</div>
+					        <a href="${base}/f/d/${version.appFile}"><div class="span5">${base}/f/download/${version.appFile}</div></a>
+					    </div>
+					</div>
+				</div>
+				<br /> 
+				<input type="submit" class="input-control size2" value="确定修改">
+			</fieldset>
+		</form>
+	</div>
+
+<script type="text/javascript"  src="${base}/res/js/kindeditor/kindeditor-all-min.js"></script>
+<script type="text/javascript"  src="${base}/res/js/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript"  src="${base}/res/js/jQuery-File-Upload/jquery.iframe-transport.js"></script>
+<script type="text/javascript"  src="${base}/res/js/jQuery-File-Upload/jquery.fileupload.js"></script>
+<script type="text/javascript">
+$(function(){
+	
+	// 上传APP
+	$("#fileupload").fileupload({
+        dataType: 'json',
+        done: function (e, data) {
+        	var _result = data.result;	
+        	if(_result.success){
+        		var _fileWrapper = $("#form_version_edit").find("#fileWrapper");
+        		var _url = "${base}"+_result.data.url;
+            	_fileWrapper.find("input[name=appFile]").val(_result.data.appFileId);
+            	$(".msg_upload").find("div.span5").html(_url).end().find("a").attr("href",_url);
+        	}else{
+        		base.info("上传失败："+_result.message)
+        	}
+        
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css('width',progress + '%');
+            $('#progress_percent').find("strong").text(progress+"%");
+        }
+    });
+	
+	
+	$("#form_version_edit").on("valid.form", function(){
+			console.log(55)
+		    $.post(
+		        "${base}/b/versions/ios/${version.id}/update",
+		        $(this).serialize(),
+		        function(json){
+		        	console.log(json.success)
+		            if(json.success){
+		            	base.info("修改版本成功~");
+		            }else{
+		            	alert("修改版本失败："+json.message);
+		            };
+		        }
+		    );
+		})
+	
+	// 编辑器
+	var editor = KindEditor.create('textarea[name="content"]',{
+		resizeType : 1,
+		allowPreviewEmoticons : true,
+		allowImageRemote : true,
+		urlType : 'domain',
+		uploadJson : '${base}/b/versions/uploadImg',
+		items : [
+			'source','preview','fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+			'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+			'insertunorderedlist', '|',  'image', 'link']
+	});
+})
+</script>	
+</script>
+</body>
+</html>

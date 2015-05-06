@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>index</title>
+</head>
+<body>
+	<div class="container">
+	<div class="grid ">
+		<div class="row">
+			<div class="span4">
+				<h2>
+					<i class="${projectApp.appType.icon} on-left"></i> <strong>${projectApp.appType.intro}</strong>
+				</h2>
+			</div>
+			<div class="span8">
+				<h2>${projectApp.project.projectName}&nbsp;${projectApp.app.version}</h2>
+				<div class="text-muted"><small>${projectApp.app.createDate?datetime}</small></div>
+				<br />
+				<div>
+					<div>
+						${projectApp.app.content}
+					</div>
+					<div>
+					<p>
+						<strong>附件:</strong>
+						<a href="${base}/f/d/${projectApp.app.appFile}">点击下载</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

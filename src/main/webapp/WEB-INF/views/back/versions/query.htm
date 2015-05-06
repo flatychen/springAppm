@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>index</title>
+</head>
+<body>
+<div class="">
+	<h2>
+		<i class="${appType.icon} on-left"></i> <strong>${appType.intro}</strong>
+	</h2>
+	<table class="table bordered striped hovered green">
+		<thead>
+			<tr>
+				<th class="text-center">名称</th>
+				<th class="text-center">版本</th>
+				<th class="text-center">创建时间</th>
+				<th class="text-center">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list pageBean.objList as item >
+			<tr>
+				<td class="text-center">${item.projectName}</td>
+				<td class="text-center"><strong class="">${item.version}</strong></td>
+				<td class="text-center">${item.createDate?datetime}</td>
+				<td class="text-center">
+					<button class="inverse e_edit" id="${item.id}">修改</button>
+					<button class="warning e_del"  id="${item.id}">删除</button>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$(".e_del").click(function(){
+			if(confirm("确定要此版本吗？")){
+				$.getJSON("${base}/b/versions/"+$(this).attr("id")+"/del", function(json){
+					if(json.success){
+						base.info("删除成功");
+					}else{
+						base.info("删除失败:"+json.message);
+					}
+				});
+			}
+		})
+		
+		$(".e_edit").click(function(){
+			window.location = "${base}/b/versions/${appType.intro}/"+$(this).attr("id")+"/edit";
+		})
+		
+	})
+</script>
+</body>
+</html>
