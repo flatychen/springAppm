@@ -8,13 +8,14 @@
 
 	<context:component-scan base-package="cn.appm.web"  use-default-filters="false" >      
       <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />    
+      <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />    
  	</context:component-scan> 
 
 	<mvc:annotation-driven />
 
-	<!-- spring 内容协商 同时支持json与html页面 -->
-	<bean
-		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	<!-- (生产去掉)spring 内容协商 同时支持json与html页面 -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver" >
+		<property name="order" value="0" />
 		<property name="ignoreAcceptHeader" value="false" />
 		<property name="mediaTypes">
 			<map>
@@ -24,27 +25,38 @@
 		<property name="defaultViews">
 			<list>
 				<bean
-					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
-					<!-- 设置单对象返回JSON直接返回 -->
-					<property name="extractValueFromSingleKeyModel" value="true" />
+					class="com.alibaba.fastjson.support.spring.FastJsonJsonView">
 				</bean>
 			</list>
 		</property>
 	</bean>
 
 	<!-- 视图解析 -->
+	
+	<!-- 支持 freemarker -->
 	<bean id="freemarkerConfig"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="configLocation" value="/WEB-INF/freemarker.properties" />
 		<property name="templateLoaderPath" value="/WEB-INF/" />
 	</bean>
-	<bean id="viewResolver"
+	<bean id="freemarkerViewResolver"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-		<property name="cache" value="false" />
+		<property name="order" value="1" />
 		<property name="prefix" value="" />
+		<property name="cache" value="true" />
 		<property name="contentType" value="text/html;charset=UTF-8" />
 		<property name="suffix" value=".htm" />
 	</bean>
+	<!-- 支持 jsp -->
+	<bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="2" />
+		<property name="cache" value="true" />
+		<property name="prefix" value="/WEB-INF/" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
 
 	<!-- 文件上传解析 -->
 	<bean id="multipartResolver"
@@ -53,6 +65,7 @@
 	
 	<!-- 静态资源解析支持 -->
 	<mvc:default-servlet-handler />
+
 
 	<!-- 引入 -->
 	<import resource="spring_interceptors.xml" />

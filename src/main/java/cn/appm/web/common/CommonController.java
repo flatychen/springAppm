@@ -24,14 +24,15 @@ public class CommonController extends BaseController {
 		return (String) super.getSessionAttribute(WebConstants.SECURIYT_CODE);
 	}
 
-	@RequestMapping(value="/checkCode",produces="application/json")
+	@RequestMapping(value = "/checkCode", produces = "application/json")
 	@ResponseBody
 	protected String checkSecurityCode(String clientCaptcha) {
-		String serverCode = (String) super.getSessionAttribute(WebConstants.SECURIYT_CODE);
-		Map<String,Object> json = new HashMap<String, Object>(2);
-		if(serverCode.equalsIgnoreCase(clientCaptcha)){
+		String serverCode = (String) super
+				.getSessionAttribute(WebConstants.SECURIYT_CODE);
+		Map<String, Object> json = new HashMap<String, Object>(2);
+		if (serverCode.equalsIgnoreCase(clientCaptcha)) {
 			json.put("ok", "");
-		}else{
+		} else {
 			json.put("error", "   ");
 		}
 		return FastJsonUtils.toJsonString(json);
