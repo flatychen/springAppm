@@ -28,9 +28,9 @@
 		<!-- httpclient -->
 		<httpasyncclient-version>4.0.2</httpasyncclient-version>
 		<!-- logs -->
-		<org.slf4j-version>1.6.4</org.slf4j-version>
-		<log4j-version>1.2.14</log4j-version>
-		<log4jdbc-remix-version>0.2.7</log4jdbc-remix-version>
+		<org.slf4j-version>1.7.12</org.slf4j-version>
+		<logback.version>1.1.2</logback.version>
+		<log4jdbc-log4j2-jdbc4-version>1.16</log4jdbc-log4j2-jdbc4-version>
 		<!-- spring -->
 		<org.aspectj-version>1.7.2</org.aspectj-version>
 		<org.springframework-version>3.2.8.RELEASE</org.springframework-version>
@@ -78,7 +78,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
+			<artifactId>log4j-over-slf4j</artifactId>
 			<version>${org.slf4j-version}</version>
 		</dependency>
 		<dependency>
@@ -87,10 +87,21 @@
 			<version>${org.slf4j-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j-version}</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bgee.log4jdbc-log4j2</groupId>
+			<artifactId>log4jdbc-log4j2-jdbc4</artifactId>
+			<version>${log4jdbc-log4j2-jdbc4-version}</version>
+		</dependency>
+
 		<!-- apache commons -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
@@ -186,12 +197,6 @@
 			<artifactId>${jdbc.driver.artifactId}</artifactId>
 			<version>${jdbc.driver.version}</version>
 			<scope>runtime</scope>
-		</dependency>
-		<!-- jdbc log -->
-		<dependency>
-			<groupId>org.lazyluke</groupId>
-			<artifactId>log4jdbc-remix</artifactId>
-			<version>${log4jdbc-remix-version}</version>
 		</dependency>
 
 
