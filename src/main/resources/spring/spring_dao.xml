@@ -24,12 +24,12 @@
 		<property name="removeAbandonedTimeout" value="180" />
 		
 		<!-- 启动自动重连 -->
-		<property name= "testWhileIdle" value="true" />  
+		<!-- <property name= "testWhileIdle" value="true" />  
         <property name= "testOnBorrow" value="false" />  
         <property name= "testOnReturn" value="false" />  
         <property name= "validationQuery" value="select 1" />  
         <property name= "timeBetweenEvictionRunsMillis" value="60000" />  
-        <property name= "numTestsPerEvictionRun" value="10" />  
+        <property name= "numTestsPerEvictionRun" value="10" />   -->
 		
 	</bean>
 	
