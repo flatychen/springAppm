@@ -27,10 +27,10 @@
 	
 	<!-- 一定要放xml最下面 -->
 	<beans profile="production">
-		<context:property-placeholder location="classpath*:dataSource.properties" />
+		<context:property-placeholder location="classpath:dataSource.properties" />
 	</beans>
 	<beans profile="deveploment">
 		<context:property-placeholder
-			location="classpath*:development.dataSource.properties" />
+			location="classpath:development.dataSource.properties" />
 	</beans>
 </beans>
