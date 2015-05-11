@@ -14,6 +14,10 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	<context-param>
+		<param-name>spring.profiles.default</param-name>
+		<param-value>production</param-value>
+	</context-param>
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -32,7 +36,7 @@
 		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
 		<async-supported>true</async-supported>
 	</filter>
-	
+
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -83,8 +87,8 @@
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
-	
-	
+
+
 	<error-page>
 		<error-code>500</error-code>
 		<location>/WEB-INF/error/500.jsp</location>

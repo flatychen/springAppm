@@ -16,7 +16,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * @date 2015-5-6
  * @version
  */
-public class Main {
+public class StartServer {
 
 	/**
 	 * 工程名称
@@ -29,6 +29,10 @@ public class Main {
 	private static int port = 8080;
 
 	public static void main(String[] args) {
+		
+		// 设定Spring的profile
+		Profiles.setProfileAsSystemProperty(Profiles.DEVELOPMENT);
+		
 		JettyServer server = new JettyServer(projectName, port);
 		try {
 			server.startUp();
@@ -69,7 +73,7 @@ public class Main {
 
 		private void initContext(String contextPath) {
 			// 设置 webapp目录
-			ProtectionDomain protectionDomain = Main.class.getProtectionDomain();
+			ProtectionDomain protectionDomain = StartServer.class.getProtectionDomain();
 			URL location = protectionDomain.getCodeSource().getLocation();
 			WebAppContext context = new WebAppContext(DEFAULT_WEBAPP_PATH, "/" + contextPath);
 			this.context =  context;
