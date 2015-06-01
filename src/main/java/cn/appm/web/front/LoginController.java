@@ -29,9 +29,6 @@ public class LoginController extends CommonController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginPage() throws Exception {
-		if (1 == 1) {
-			throw new NullPointerException();
-		}
 		return "/views/front/login";
 	}
 

@@ -1,4 +1,4 @@
-package cn.appm;
+package server;
 
 import java.net.URL;
 import java.security.ProtectionDomain;
