@@ -1,4 +1,4 @@
-package cn.appm;
+package server;
 
 public class Profiles {
 	

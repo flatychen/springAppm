@@ -16,6 +16,9 @@
 	<logger name="jdbc.resultset" level="OFF" addtivity="false"></logger>
 	<logger name="jdbc.connection" level="OFF" addtivity="false"></logger>
 
+	<!-- mybatis -->
+	<logger name="cn.appm.persistance" level="DEBUG" addtivity="false"></logger>
+
 	<root level="INFO">
 		<appender-ref ref="console" />
 	</root>

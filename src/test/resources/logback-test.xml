@@ -16,6 +16,8 @@
 	<logger name="jdbc.resultset" level="OFF" addtivity="false"></logger>
 	<logger name="jdbc.connection" level="OFF" addtivity="false"></logger>
 
+	
+
 
 	<root level="INFO">
 		<appender-ref ref="console" />
